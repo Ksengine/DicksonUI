@@ -23,7 +23,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='DicksonUI',
-    version='2.2.3',
+    version='2.2.4',
     author='Kavindu Santhusa',
     author_email='kavindusanthusa@gmail.com',
     license='MIT',
@@ -64,5 +64,6 @@ browser, browser-based, webview, html, view, remote, interface'''
           'servelight',
           'wsocket',
           'signalpy'
+          'webruntime'
       ]
     )

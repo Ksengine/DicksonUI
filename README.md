@@ -1,8 +1,6 @@
 # DicksonUI - The Best GUI Library For Python
 
-![Python package](https://github.com/Ksengine/DicksonUI/workflows/Python%20package/badge.svg)
-
-[![Downloads](https://pepy.tech/badge/dicksonui)](https://pepy.tech/project/dicksonui)
+![Build Python Package](https://github.com/Ksengine/DicksonUI/workflows/Build%20Python%20Package/badge.svg)
 
 With DicksonUI, you can make Graphical User Interfaces with python with just few lines of code. DicksonUI is super easy to use and handles everything for you. Just write your code easily
 or import any HTML code.
@@ -49,7 +47,7 @@ mywindow=window()
 document=mywindow.document
 App = Application(('',1024))
 App.Add(mywindow)
-print("Navigate To - "+App.location)
+mywindow.show()
 ```
 
 #### Run!!! 
@@ -62,15 +60,9 @@ Or, For Python 2
 ```sh
 python myscript.py
 ```
-This will print a link
-`http://localhost:<port>`
- 
-Run your favorite browser
-```sh
-chromium-browser
-```
-And then navigate to above link.
-😥😥😥 Nothing!!!but a blank page.
+wait a moment...
+
+😥😥😥 Nothing!!!but a blank window.
 
 #### Add items to form 
 Okay, now that we will learn about Controls
@@ -83,22 +75,24 @@ App.Add(mywindow)
 heading=document.createElement('h1')
 heading.innerHTML='Hello World!'
 document.body.appendChild(heading)
-print("Navigate To - "+App.location)
+mywindow.show()
 ```
-Run it 
-View wiki for more info
+Ru
+ it.
+[view docs](https://dicksonui.gitbook.io)
+
+[report bugs](https://github.com/Ksengine/DicksonUI/issues/new)
 
 ## alternatives?
 
--[RemI](https://github.com/dddomodossola/remi), which has exactly the same idea (build a GUI in Python, run it in a browser). Definitely worth a look.It is little heavy and use websockets. So it cannot run on older browsers. we used both websockets and long polling.
-
+-[RemI](https://github.com/dddomodossola/remi), which has exactly the same idea (build a GUI in Python, run it in a browser). Definitely worth a look.It is little heavy and use websockets. So it cannot run on older browsers. we used both websockets and long polling
 -[tkinter](https://docs.python.org/3/library/tkinter.html#module-tkinter)  (standard library)
 
 Advantages: it's well-known. Lots of people have written tutorials and documentation for it.
 
 Disadvantages: it feels like a wrapper around Tk, because it is. This gives good performance and detailed control, but writing it feels unintuitive (to me). it isnt based on browsers and have limited features.
 
--[flexx](https://github.com/zoofIO/flexx) is very large and had more dependencies, it use tornado server. but we use our own library.limited features! and you can easily mix server-side and client-side
+-[flexx](https://github.com/flexxui/flexx) is very large and had more dependencies, it use tornado server. but we use our own library.limited features! and you can easily mix server-side and client-side
 
 -eel is an alternative for Electron but it is based on bottle server. and it is not a pythonic way.
 
