@@ -3,6 +3,36 @@
 from signalpy import *
 import signalpy.jslib
 import os
+
+try:
+    import webruntime
+    runtime='browser'
+    for _runtime, cls in webruntime._runtimes.items():
+        try:
+            if webruntime._runtimes[_runtime]()._get_exe():
+                if _runtime=='firefox':
+                    runtime='app'
+                    break
+                elif _runtime=='nw':
+                    runtime='app'
+                    break
+                elif _runtime=='chrome':
+                    runtime='chrome-app'
+                    break
+                elif _runtime=='pyqt':
+                    runtime='pyqt-app'
+                    break
+                elif _runtime=='browser':
+                    runtime='browser'
+                    break
+                else:
+                    runtime=_runtime+'-browser'
+        except:
+            pass
+except:
+    webruntime = None
+    import webbrowser
+print(runtime)
 package_dir = os.path.dirname(__file__)
 
 __all__=['Application']
@@ -16,13 +46,14 @@ class Application():
     '''
     def __init__(self, address=('',None)):
         self._forms = []
+        self.shown_forms = []
         self._counter = 0
         self.Icon = b'DicksonUI'
         self.app=app
         self.Hub=Hub
         self.server=Server(address)
         self.server.serve_forever()
-        self.location =self.server.base_environ.get('SERVER_NAME')+self.server.base_environ.get('SERVER_PORT')
+        self.location ='http://'+self.server.base_environ.get('SERVER_NAME')+':'+self.server.base_environ.get('SERVER_PORT')
         app.routes['/']=self.mainhandler
         app.routes['/favicon.ico']=self.faviconhandler
         app.routes['/DicksonUI.js']=self.jslibhandler
@@ -58,3 +89,8 @@ class Application():
         self.server = None
         self=None
 
+    def show_window(self, bom):
+        if webruntime:
+            webruntime.launch(self.location+'/'+bom.Name, runtime)
+        else:
+            webbrowser.open(self.location+'/'+bom.Name)

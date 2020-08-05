@@ -13,3 +13,4 @@ document.body.innerHTML='''
 '''
 mywindow.register('accept.click',accepted)
 print("Navigate To - "+App.location)
+mywindow.show()

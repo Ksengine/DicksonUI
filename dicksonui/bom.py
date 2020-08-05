@@ -25,6 +25,7 @@ class window():
         self.eval_list = {}
         self.func_list = {}
         self.client=None
+        self.webview=None
 
     def initialize(self, parent):
         self.parent=parent
@@ -36,6 +37,12 @@ class window():
     def clienthandler(self, client):
         self.client=client
         self.Hub.Send(self.script,self.client)
+        self.document.initialize(self)
+        self.onload()
+
+    def on_shown(self):
+        self.webview.evaluate_js(self.script)
+        print(self.script)
         self.document.initialize(self)
         self.onload()
 
@@ -100,12 +107,14 @@ class window():
 
     def __getattr__(self, name):
         d=self.__dict__.get(name)
+        if self.webview:
+            d=getattr(self.webview, name)
         if d:
             return d
         return fakeattr(self.run,'window.'+name)
 
     def __setattr__(self, name, attr):
-        if name in ['script','control_counter','Name','eval_id','eval_list','func_list','parent','Hub','client','onload']:
+        if name in ['script','control_counter','Name','eval_id','eval_list','func_list','parent','Hub','client','onload','webview']:
             self.__dict__[name]=attr
         else:
             if isinstance(attr,str):
@@ -121,3 +130,6 @@ class window():
 
     def onload(self):
         return
+
+    def show(self):
+        self.webview = self.parent.show_window(self)

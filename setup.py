@@ -23,7 +23,7 @@ with open(path.join(here, 'README.md')) as f:
 
 setup(
     name='DicksonUI',
-    version='2.0.2',
+    version='2.2.3',
     author='Kavindu Santhusa',
     author_email='kavindusanthusa@gmail.com',
     license='MIT',
@@ -39,7 +39,6 @@ browser, browser-based, webview, html, view, remote, interface'''
     long_description_content_type='text/markdown',
     platforms='any',
     packages=["dicksonui"],
-    zip_safe=True,
     classifiers=[
         "License :: OSI Approved :: MIT License",
         'Intended Audience :: Developers',
