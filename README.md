@@ -77,8 +77,10 @@ heading.innerHTML='Hello World!'
 document.body.appendChild(heading)
 mywindow.show()
 ```
-Ru
- it.
+Run it.
+
+Hello World! 😊😊😊
+
 [view docs](https://dicksonui.gitbook.io)
 
 [report bugs](https://github.com/Ksengine/DicksonUI/issues/new)
