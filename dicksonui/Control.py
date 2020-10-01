@@ -5,8 +5,9 @@
 #  Control.py
 #
 from .fakeattr import fakeattr
+import json
+__all__ = ['Control']
 
-__all__=['Control']
 
 class Control:
     def __init__(self, TagName):
@@ -16,12 +17,12 @@ class Control:
         self.script += 'var Control = document.createElement("' \
             + TagName + '");'
         self.Controls = []
-        self.handlers={}
+        self.handlers = {}
 
     def initialize(self, parent):
-        self.parent=parent
+        self.parent = parent
         if not self.id:
-            parent.controls_id_index+=1
+            parent.controls_id_index += 1
             self.id = str(parent.controls_id_index)
         self._run = parent._run
         self.register = parent.register
@@ -40,10 +41,10 @@ class Control:
         if self._hosted:  # check if control is added to Form
             if evaluate:
                 return self._run('document.getElementById("'
-                        + self.id + '").' + message,True)
+                                 + self.id + '").' + message, True)
             else:
                 self._run('document.getElementById("' + self.id
-                                + '").' + message)
+                          + '").' + message)
         else:
             if evaluate:
                 raise Exception("Cannot evaluate before run Application.")
@@ -53,31 +54,32 @@ class Control:
     def appendChild(self, child):
         if self._hosted:
             self._run(child.initialize(self.parent)+'document.getElementById("'
-                        + self.id + '").appendChild(Control);')
+                      + self.id + '").appendChild(Control);')
             child.child_handler()
         else:
             self.Controls.append(child)
-    
+
     def __getattr__(self, name):
-        d=self.__dict__.get(name)
+        d = self.__dict__.get(name)
         if d:
             return d
-        return fakeattr(self.run,name)
+        return fakeattr(self.run, name)
 
     def __setattr__(self, name, attr):
-        if name in ['script','_hosted','id','Controls','parent','_run','handlers','register']:
-            self.__dict__[name]=attr
+        if name in ['script', '_hosted', 'id', 'Controls', 'parent', '_run', 'handlers', 'register']:
+            self.__dict__[name] = attr
         else:
-            if isinstance(attr,str):
-                attr='"'+attr.replace('"','\\'+'"').replace('\'','\\'+'\'').replace('\n','\\'+'n')+'"'
-            self.run(name+'='+str(attr)+';')
+            try:
+                self.run(name+'='+json.dumps(attr)+';')
+            except:
+                raise RuntimeError("cannot set this value( %s )" % attr)
 
     def addEventListener(self, _type, listner):
         if not self._hosted:
             if self.handlers.get(_type):
                 self.handlers[_type].append(listner)
             else:
-                self.handlers[_type]=[listner]
+                self.handlers[_type] = [listner]
         else:
             self.register(self.id+'.'+_type, listner)
         self.run('addEventListener("'+_type+'",dicksonui_event_handler);')

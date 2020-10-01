@@ -1,0 +1,1 @@
+template = '<!DOCTYPE html><html><head> <script src="/DicksonUI.js"></script> <title>DicksonUI</title></head><body> <script id="script"></script> <noscript><p>The DicksonUI requires JavaScript in order to run. Enable JavaScript for <code>localhost</code> and refresh this page.</p> </noscript></body></html>'
