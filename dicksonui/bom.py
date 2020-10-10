@@ -1,11 +1,16 @@
 import json
+from os import environ
 import logging
 from .fakeattr import fakeattr
 from .template import template
 from .errors import jserrors
 from .dom import document as dom
+
 logger = logging.getLogger(__name__)
-__all__ = ['window']
+try:
+    logger.setLevel(environ['logLevel'])
+    logger.debug('logLevel - '+environ['logLevel'])
+except:pass
 
 
 class _event():
@@ -60,6 +65,7 @@ class window():
         self.parent = None
 
     def initialize(self, parent):
+        logger.debug(repr(self)+' initialized')
         self.parent = parent
         self.parent.app.routes['/'+self.Name] = self.temphandler
         self.Hub = self.parent.Hub('/'+self.Name+'/Hub')
@@ -74,11 +80,13 @@ class window():
             self.clients[client] = w
             w.clienthandler(client)
             w.onload = self.onload
-        self.client = client
-        if len(self.script):
-            self.Hub.Send(self.script, self.client)
-        self.document.initialize(self)
-        self.onload(self)
+        else:
+            logger.debug(repr(self)+' - new client connected with id %s.'%str(client))
+            self.client = client
+            if len(self.script):
+                self.Hub.Send(self.script, self.client)
+            self.document.initialize(self)
+            self.onload(self)
 
     def temphandler(self, environ, start_response):
         status = '200 OK'
@@ -89,6 +97,12 @@ class window():
     def msghandler(self, message, client):
         if client != self.client:
             self.clients[client].msghandler(message, client)
+            return
+        if len(message)>23:
+            logmessage=message[:20]+'...'
+        else:
+            logmessage=message
+        logger.debug(repr(self)+' - message-"%s" from %s'%(logmessage,str(client)))
         try:
             obj = json.loads(message)
         except Exception as e:
@@ -149,6 +163,7 @@ class window():
             except:
                 pass
             if e:
+                logger.error('%s : %s'%(e,message))
                 raise e(message)
             return rdata
 
@@ -218,6 +233,12 @@ class window():
         """
         self.webview = self.parent.show_window(self)
 
+    def wait(self):
+        """wait until client connected"""
+        while not self.client:
+            pass
+
+
     def __repr__(self):
         _repr = __name__+".window"
         if self.Name:
@@ -225,3 +246,6 @@ class window():
         if self.parent:
             _repr += " at "+self.parent.location+'/'+self.Name
         return _repr
+
+    def __str__(self):
+        return self.__repr__()

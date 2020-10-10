@@ -8,7 +8,7 @@ or import any HTML code.
 ## Overview
 The DicksonUI Python GUI Library was written with lightweight use in mind. It provides the following key features
 - lightweight
-- few dependancies (all are designed by me)- but micro version is independant.
+- few dependancies (all are designed by me)
 - Cross-Platform(Windows, Linux, Mac)
 - No Runtime Installer(Runtime is Browser)
 - Low Ram Usage(less on your script, all used by browser)
@@ -77,10 +77,8 @@ heading.innerHTML='Hello World!'
 document.body.appendChild(heading)
 mywindow.show()
 ```
-Run it.
-
-Hello World! 😊😊😊
-
+Ru
+ it.
 [view docs](https://dicksonui.gitbook.io)
 
 [report bugs](https://github.com/Ksengine/DicksonUI/issues/new)

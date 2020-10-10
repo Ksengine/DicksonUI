@@ -23,9 +23,6 @@ except:
                     elif _runtime == 'chrome':
                         runtime = 'chrome-app'
                         break
-                    elif _runtime == 'pyqt':
-                        runtime = 'pyqt-app'
-                        break
                     elif _runtime == 'browser':
                         runtime = 'browser'
                         break

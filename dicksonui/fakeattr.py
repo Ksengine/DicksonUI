@@ -35,19 +35,22 @@ class fakeattr():
     def __str__(self):
         return self._run(self._parent+'.toString();', True)
 
+    def __coerce__(self,value):
+        try:
+            return coerce(self.__get__(), value)
+        except:
+            return None
+
     def __call__(self, *args, **kwargs):
         e = kwargs.setdefault('e', True)
         e = kwargs.pop('e')
         nargs = []
         for arg in args:
-            if isinstance(arg, object):
+            if isinstance(arg, fakeattr):
                 nargs.append(arg._parent)
             else:
                 nargs.append(arg)
-        try:
-            self._run(self._parent+"("+json.dumps(list(nargs))[1:-1]+');', e)
-        except Exception as e:
-            raise e
+        self._run(self._parent+"("+json.dumps(list(nargs))[1:-1]+');', e)
 
     def __setitem__(self, key, value):
         try:
